@@ -5,21 +5,20 @@ _zsh_too_long_callback() {
     notify-send "${@}"
 }
 
-_zsh_too_long_start_time=$EPOCHSECONDS
-_zsh_too_long_window_id=$(xdotool getwindowfocus getwindowname)
-_zsh_too_long_executing_command=""
-
 _zsh_too_long_start() {
     _zsh_too_long_start_time=$EPOCHSECONDS
+    _zsh_too_long_window_id=$(xdotool getwindowfocus getwindowpid)
     _zsh_too_long_executing_command="$1"
 }
+
+_zsh_too_long_start
 
 _zsh_too_long_stop() {
     if ! [ "$_zsh_too_long_executing_command" ]; then
         return
     fi
 
-    local current_window_id=$(xdotool getwindowfocus getwindowname)
+    local current_window_id=$(xdotool getwindowfocus getwindowpid)
 
     if [ "$_zsh_too_long_window_id" = "$current_window_id" ]; then
         return
