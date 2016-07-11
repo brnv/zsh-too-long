@@ -2,7 +2,7 @@ autoload -U add-zsh-hook
 zmodload zsh/datetime
 
 _zsh_too_long_callback() {
-    notify-send $@
+    notify-send "${@}"
 }
 
 _zsh_too_long_start_time=$EPOCHSECONDS
