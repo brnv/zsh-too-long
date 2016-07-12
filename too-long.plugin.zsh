@@ -2,7 +2,10 @@ autoload -U add-zsh-hook
 zmodload zsh/datetime
 
 _zsh_too_long_callback() {
-    notify-send "${@}"
+    local executed_command=$1
+    local exit_code=$2
+
+    notify-send "$executed_command" "exit code: $exit_code"
 }
 
 _zsh_too_long_start() {
@@ -14,6 +17,8 @@ _zsh_too_long_start() {
 _zsh_too_long_start
 
 _zsh_too_long_stop() {
+    local command_exit_code=$?
+
     if ! [ "$_zsh_too_long_executing_command" ]; then
         return
     fi
@@ -31,7 +36,7 @@ _zsh_too_long_stop() {
 
     if (( $execution_time > $threshold )); then
         _zsh_too_long_callback \
-            $_zsh_too_long_executing_command "execution done"
+            "$_zsh_too_long_executing_command" "$command_exit_code"
     fi
 
     _zsh_too_long_executing_command=""
