@@ -5,7 +5,12 @@ _zsh_too_long_callback() {
     local executed_command=$1
     local exit_code=$2
 
-    notify-send "$executed_command" "exit code: $exit_code"
+    local title="[success]"
+    if [[ "$exit_code" != "0" ]]; then
+        title="[failure] non-zero exit code: $exit_code"
+    fi
+
+    notify-send "$title" -- " $executed_command"
 }
 
 _zsh_too_long_start() {
