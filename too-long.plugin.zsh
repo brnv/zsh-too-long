@@ -41,6 +41,10 @@ _zsh_too_long_stop() {
         return
     fi
 
+    local command="$_zsh_too_long_executing_command"
+
+    _zsh_too_long_executing_command=""
+
     local threshold
     zstyle -g threshold 'too-long:threshold'
     threshold=${threshold:-5}
@@ -54,12 +58,10 @@ _zsh_too_long_stop() {
         fi
 
         _zsh_too_long_callback \
-            "$_zsh_too_long_executing_command" "$command_exit_code"
+            "$command" "$command_exit_code"
     else
         ( cat "$_zsh_too_long_pipe" > /dev/null ) &|
     fi
-
-    _zsh_too_long_executing_command=""
 }
 
 _zsh_too_long_cleanup() {
