@@ -26,7 +26,7 @@ _zsh_too_long_start() {
 
     # run in the subshell to avoid slow xdotool run time
     (
-        local pid="$(xdotool getwindowfocus getwindowpid)"
+        local pid="$(_zsh_too_long_get_window_pid)"
 
         echo "$pid" > "$_zsh_too_long_pipe"
     ) &|
@@ -51,7 +51,7 @@ _zsh_too_long_stop() {
     execution_time=$(($EPOCHSECONDS - $_zsh_too_long_start_time))
 
     if (( $execution_time > $threshold )); then
-        local current_window_id=$(xdotool getwindowfocus getwindowpid)
+        local current_window_id=$(_zsh_too_long_get_window_pid)
 
         if [ "$(cat "$_zsh_too_long_pipe")" = "$current_window_id" ]; then
             return
@@ -66,6 +66,12 @@ _zsh_too_long_stop() {
 
 _zsh_too_long_cleanup() {
     rm "$_zsh_too_long_pipe"
+}
+
+_zsh_too_long_get_window_pid() {
+    if [[ "$DISPLAY" ]]; then
+        xdotool getwindowfocus getwindowpid
+    fi
 }
 
 add-zsh-hook preexec _zsh_too_long_start
