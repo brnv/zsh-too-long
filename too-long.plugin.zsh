@@ -70,7 +70,7 @@ _zsh_too_long_cleanup() {
 
 _zsh_too_long_get_window_pid() {
     if [[ "$DISPLAY" ]]; then
-        xdotool getwindowfocus getwindowpid
+        xdotool getwindowfocus getwindowpid 2>/dev/null
     fi
 }
 
