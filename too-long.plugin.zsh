@@ -29,7 +29,7 @@ _zsh_too_long_start() {
     (
         local pid="$(_zsh_too_long_get_window_pid)"
 
-        echo "$pid" > "$_zsh_too_long_pipe"
+        echo "$pid" >! "$_zsh_too_long_pipe"
     ) &|
 
     _zsh_too_long_executing_command="$1"
