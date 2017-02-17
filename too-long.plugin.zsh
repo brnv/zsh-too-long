@@ -54,15 +54,19 @@ _zsh_too_long_stop() {
     if (( $execution_time > $threshold )); then
         local current_window_id=$(_zsh_too_long_get_window_pid)
 
-        if [ "$(cat "$_zsh_too_long_pipe")" = "$current_window_id" ]; then
+        if [ "$(_zsh_too_long_pipe)" = "$current_window_id" ]; then
             return
         fi
 
         _zsh_too_long_callback \
             "$command" "$command_exit_code"
     else
-        ( cat "$_zsh_too_long_pipe" > /dev/null ) &|
+        ( _zsh_too_long_pipe > /dev/null ) &|
     fi
+}
+
+_zsh_too_long_pipe() {
+    cat "$_zsh_too_long_pipe" 2>/dev/null
 }
 
 _zsh_too_long_cleanup() {
