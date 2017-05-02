@@ -11,15 +11,15 @@ _zsh_too_long_callback() {
     local executed_command=$1
     local exit_code=$2
 
-    local title="[success]"
+    local message="[success]"
     if [[ "$exit_code" != "0" ]]; then
-        title="[failure] non-zero exit code: $exit_code"
+        message="[failure] non-zero exit code: $exit_code"
     fi
 
     # dbus-launch to show notification on the remote client,
     # e.g. connected via x11 forwarding
     dbus-launch --exit-with-session \
-        notify-send "$title" -- " $executed_command"
+        notify-send " $executed_command $message"
 }
 
 _zsh_too_long_start() {
