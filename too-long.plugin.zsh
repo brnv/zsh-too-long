@@ -19,7 +19,7 @@ _zsh_too_long_callback() {
     # dbus-launch to show notification on the remote client,
     # e.g. connected via x11 forwarding
     dbus-launch --exit-with-session \
-        notify-send " $executed_command$message"
+        notify-send '' " $executed_command$message"
 }
 
 _zsh_too_long_start() {
